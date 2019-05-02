@@ -20,7 +20,7 @@ public class CurrentSummonerScoreRepo {
     }
 
     //Update Method in MongoDB
-    void updateCurrentSummonerScore(LeaguePositionDTO leaguePositionDTO) {
+    public void updateCurrentSummonerScore(LeaguePositionDTO leaguePositionDTO) {
         String updateName;
         for (int idx = 0; idx < leaguePositionDTO.getArray().size(); idx++) {
             LeaguePositionDTO.LeaguePosition chageObj = leaguePositionDTO.getArray().get(idx);
@@ -39,4 +39,18 @@ public class CurrentSummonerScoreRepo {
             mongoTemplate.updateFirst(query,update,LeaguePositionDTO.class);
         }
     }
+
+    // return LeaguePositionDTO that found by summoner's name
+    public LeaguePositionDTO.LeaguePosition findLeaguePostionDTO(String summonerName){
+        Criteria criteria = new Criteria("summonerName");
+        criteria.is(summonerName);
+
+        Query query = new Query(criteria);
+
+        LeaguePositionDTO.LeaguePosition returnDTO = mongoTemplate.findOne(query, LeaguePositionDTO.LeaguePosition.class);
+
+
+        return returnDTO;
+    }
+
 }
