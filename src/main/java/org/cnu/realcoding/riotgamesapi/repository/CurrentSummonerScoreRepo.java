@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Criteria;
 
+import java.util.LinkedList;
+
 @Repository
 public class CurrentSummonerScoreRepo {
 
@@ -51,6 +53,11 @@ public class CurrentSummonerScoreRepo {
 
 
         return returnDTO;
+    }
+
+    // find All Summoner's Name and return List of All summoner's name
+    public LinkedList<String> findAllEncryptedSummonerQueue(LeaguePositionDTO leaguePositionDTO){
+        
     }
 
 }
