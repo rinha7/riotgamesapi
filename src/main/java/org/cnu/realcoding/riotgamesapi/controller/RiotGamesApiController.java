@@ -7,13 +7,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Set;
+
 @RestController
 public class RiotGamesApiController {
     @Autowired
     private LeaguePositionService leaguePositionService;
 
     @GetMapping("/summoner")
-    public LeaguePositionDTO getLeaguePositionDTO(@RequestParam String summonerName){
+    public Set<LeaguePositionDTO> getLeaguePositionDTO(@RequestParam String summonerName){
         return leaguePositionService.getLeaguePosition(summonerName);
     }
 }
