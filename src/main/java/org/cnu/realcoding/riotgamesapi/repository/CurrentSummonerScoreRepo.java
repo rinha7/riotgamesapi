@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.util.LinkedList;
+import java.util.List;
 
 @Repository
 public class CurrentSummonerScoreRepo {
@@ -56,8 +57,17 @@ public class CurrentSummonerScoreRepo {
     }
 
     // find All Summoner's Name and return List of All summoner's name
-    public LinkedList<String> findAllEncryptedSummonerQueue(LeaguePositionDTO leaguePositionDTO){
-        
+    public LinkedList<String> findAllEncryptedSummonerQueue(){
+        LinkedList<String> nameList = new LinkedList<>();
+
+        List<LeaguePositionDTO> dataList = mongoTemplate.findAll(LeaguePositionDTO.class);
+
+        for(int idx=0;idx<dataList.size();idx++){
+            nameList.set(idx,dataList.get(idx).getArray().get(0).getSummonerName());
+        }
+
+        return nameList;
+
     }
 
 }
