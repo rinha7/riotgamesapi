@@ -22,30 +22,30 @@ public class LeaguePositionService {
     private LinkedList<String> encryptedSummonerIdQueue = new LinkedList<>();
 
     public Set<LeaguePositionDTO> getLeaguePosition(String summonerName){
-        if(){ //todo Is there summonerName in database?
+//        if(){ //todo Is there summonerName in database?
             //todo Then return database information.
-        } else {
+//        } else {
             String encryptedSummonerId = summonerService.getEncryptedSummonerId(summonerName);
             Set<LeaguePositionDTO> currentLeaguePositionDTO = riotGamesApiClient.getCurrentLeaguePositionDTO(encryptedSummonerId);
             currentSummonerScoreRepo.insertCurrentSummonerScore(currentLeaguePositionDTO);
             return currentLeaguePositionDTO;
-        }
+//        }
     }
-
-    public void setEncryptedSummonerIdQueue(){
-        this.encryptedSummonerIdQueue = currentSummonerScoreRepo.findAllEncryptedSummonerId();
-    }
-
-    @Scheduled(initialDelay = 5000L, fixedDelay = 2000L)
-    public void updateLeaguePositionPeriodically(){
-        if(encryptedSummonerIdQueue.isEmpty()){
-            this.setEncryptedSummonerIdQueue();
-        }
-
-        String target = encryptedSummonerIdQueue.pop();
-        encryptedSummonerIdQueue.add(target);
-
-        Set<LeaguePositionDTO> updatedLeaguePositionDTO = riotGamesApiClient.getCurrentLeaguePositionDTO(target);
-        currentSummonerScoreRepo.updateCurrentSummonerScore(updatedLeaguePositionDTO);
-    }
+//
+//    public void setEncryptedSummonerIdQueue(){
+//        this.encryptedSummonerIdQueue = currentSummonerScoreRepo.findAllEncryptedSummonerId();
+//    }
+//
+//    @Scheduled(initialDelay = 5000L, fixedDelay = 2000L)
+//    public void updateLeaguePositionPeriodically(){
+//        if(encryptedSummonerIdQueue.isEmpty()){
+//            this.setEncryptedSummonerIdQueue();
+//        }
+//
+//        String target = encryptedSummonerIdQueue.pop();
+//        encryptedSummonerIdQueue.add(target);
+//
+//        Set<LeaguePositionDTO> updatedLeaguePositionDTO = riotGamesApiClient.getCurrentLeaguePositionDTO(target);
+//        currentSummonerScoreRepo.updateCurrentSummonerScore(updatedLeaguePositionDTO);
+//    }
 }
