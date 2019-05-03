@@ -31,21 +31,21 @@ public class LeaguePositionService {
             return currentLeaguePositionDTO;
 //        }
     }
-//
-//    public void setEncryptedSummonerIdQueue(){
-//        this.encryptedSummonerIdQueue = currentSummonerScoreRepo.findAllEncryptedSummonerId();
-//    }
-//
-//    @Scheduled(initialDelay = 5000L, fixedDelay = 2000L)
-//    public void updateLeaguePositionPeriodically(){
-//        if(encryptedSummonerIdQueue.isEmpty()){
-//            this.setEncryptedSummonerIdQueue();
-//        }
-//
-//        String target = encryptedSummonerIdQueue.pop();
+
+    public void setEncryptedSummonerIdQueue(){
+        this.encryptedSummonerIdQueue = currentSummonerScoreRepo.findAllEncryptedSummonerQueue();
+    }
+
+    @Scheduled(initialDelay = 5000L, fixedDelay = 2000L)
+    public void updateLeaguePositionPeriodically(){
+        if(encryptedSummonerIdQueue.isEmpty()){
+            this.setEncryptedSummonerIdQueue();
+        }
+
+        String target = encryptedSummonerIdQueue.pop();
 //        encryptedSummonerIdQueue.add(target);
-//
-//        Set<LeaguePositionDTO> updatedLeaguePositionDTO = riotGamesApiClient.getCurrentLeaguePositionDTO(target);
-//        currentSummonerScoreRepo.updateCurrentSummonerScore(updatedLeaguePositionDTO);
-//    }
+
+        Set<LeaguePositionDTO> updatedLeaguePositionDTO = riotGamesApiClient.getCurrentLeaguePositionDTO(target);
+        currentSummonerScoreRepo.updateCurrentSummonerScore(updatedLeaguePositionDTO);
+    }
 }

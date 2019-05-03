@@ -17,6 +17,7 @@ public class CurrentSummonerScoreRepo {
 
     @Autowired
     MongoTemplate mongoTemplate;
+//    private int testcount=0; // for test
 
     // This private method makes HashSet to LeaguePositionDTO
     // because API get Set data from web site
@@ -61,11 +62,15 @@ public class CurrentSummonerScoreRepo {
             String updateName = updatedata.getSummonerName();
             String updateQueueType = updatedata.getQueueType();
 
+
+//            updatedata.setWins(777);
             Query query = new Query();
-            query.addCriteria(Criteria.where("summonerId").is(updateName).and("queueType").is("updateQueueType"));
+            query.addCriteria(Criteria.where("summonerName").is(updateName).and("queueType").is(updateQueueType));
+//            query.addCriteria(Criteria.where("summonerName").is(updateName));
             Update update = new Update();
             update.set("tier",updatedata.getTier())
                     .set("wins",updatedata.getWins())
+//                    .set("wins",++testcount) //for test
                     .set("losses",updatedata.getLosses())
                     .set("rank",updatedata.getRank())
                     .set("leagueName",updatedata.getLeagueName())
@@ -74,25 +79,6 @@ public class CurrentSummonerScoreRepo {
             mongoTemplate.updateFirst(query,update,LeaguePositionDTO.class);
 
         }
-
-//        String updateName;
-//        int idx=0;
-//        while(iterator.hasNext()){
-//            LeaguePositionDTO leaguePositionDTO = makeToDTO(iterator.next());
-//            LeaguePositionDTO chageObj = leaguePositionDTO.getArray().get(idx);
-//
-//            Query query = new Query();
-//            query.addCriteria(Criteria.where("summonerId").is(updateName));
-//            Update update = new Update();
-//            update.set("tier",chageObj.getTier())
-//                    .set("wins",chageObj.getWins())
-//                    .set("losses",chageObj.getLosses())
-//                    .set("rank",chageObj.getRank())
-//                    .set("leagueName",chageObj.getLeagueName())
-//                    .set("leaguePoints",chageObj.getLeaguePoints());
-//
-//            mongoTemplate.updateFirst(query,update,LeaguePositionDTO.class);
-//        }
     }
 
     // return LeaguePositionDTO that found by summoner's name
@@ -115,9 +101,8 @@ public class CurrentSummonerScoreRepo {
         List<LeaguePositionDTO> dataList = mongoTemplate.findAll(LeaguePositionDTO.class);
 
         for(int idx=0;idx<dataList.size();idx++){
-            nameList.set(idx,dataList.get(idx).getSummonerName());
+            nameList.add(dataList.get(idx).getSummonerId());
         }
-
         return nameList;
 
     }
