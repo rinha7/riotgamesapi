@@ -20,34 +20,36 @@ public class CurrentSummonerScoreRepo {
 
     // This private method makes HashSet to LeaguePositionDTO
     // because API get Set data from web site
-    private LeaguePositionDTO makeToDTO(Set<LeaguePositionDTO> leaguePositionDTO){
-        List<LinkedHashMap> list = new ArrayList(leaguePositionDTO);
+    private LeaguePositionDTO makeToDTO(LinkedHashMap leaguePositionDTO){
 
         LeaguePositionDTO insertdata = new LeaguePositionDTO(); // new Object to insert Data
 
-        insertdata.setFreshBlood((Boolean) list.get(0).get("freshBlood"));
-        insertdata.setSummonerName((String) list.get(0).get("summonerName"));
-        insertdata.setHotStreak((Boolean) list.get(0).get("hotStreak"));
-        insertdata.setInactive((Boolean) list.get(0).get("inactive"));
-        insertdata.setLeagueId((String) list.get(0).get("leagueId"));
-        insertdata.setLeagueName((String) list.get(0).get("leagueName"));
-        insertdata.setLeaguePoints((Integer) list.get(0).get("leaguePoints"));
-        insertdata.setLosses((Integer) list.get(0).get("losses"));
-        insertdata.setPosition((String) list.get(0).get("position"));
-        insertdata.setRank((String) list.get(0).get("rank"));
-        insertdata.setSummonerId((String) list.get(0).get("summonerId"));
-        insertdata.setTier((String) list.get(0).get("tier"));
-        insertdata.setVeteran((Boolean) list.get(0).get("veteran"));
-        insertdata.setWins((Integer) list.get(0).get("wins"));
-        insertdata.setQueueType((String) list.get(0).get("queueType"));
+        insertdata.setFreshBlood((Boolean)   leaguePositionDTO.get("freshBlood"));
+        insertdata.setSummonerName((String)  leaguePositionDTO.get("summonerName"));
+        insertdata.setHotStreak((Boolean)    leaguePositionDTO.get("hotStreak"));
+        insertdata.setInactive((Boolean)     leaguePositionDTO.get("inactive"));
+        insertdata.setLeagueId((String)      leaguePositionDTO.get("leagueId"));
+        insertdata.setLeagueName((String)    leaguePositionDTO.get("leagueName"));
+        insertdata.setLeaguePoints((Integer) leaguePositionDTO.get("leaguePoints"));
+        insertdata.setLosses((Integer)       leaguePositionDTO.get("losses"));
+        insertdata.setPosition((String)      leaguePositionDTO.get("position"));
+        insertdata.setRank((String)          leaguePositionDTO.get("rank"));
+        insertdata.setSummonerId((String)    leaguePositionDTO.get("summonerId"));
+        insertdata.setTier((String)          leaguePositionDTO.get("tier"));
+        insertdata.setVeteran((Boolean)      leaguePositionDTO.get("veteran"));
+        insertdata.setWins((Integer)         leaguePositionDTO.get("wins"));
+        insertdata.setQueueType((String)     leaguePositionDTO.get("queueType"));
 
         return insertdata;
     }
 
     //Do insert SummonerScore to MongoDB
     public void insertCurrentSummonerScore(Set<LeaguePositionDTO> leagueDTOdata) {
-        LeaguePositionDTO insertdata = makeToDTO(leagueDTOdata);
-        mongoTemplate.insert(insertdata);
+        List<LinkedHashMap> data = new LinkedList(leagueDTOdata);
+        for (int i = 0; i < data.size(); i++) {
+            LeaguePositionDTO insertdata = makeToDTO(data.get(i));
+            mongoTemplate.insert(insertdata);
+        }
     }
 
 //    Update Method in MongoDB
