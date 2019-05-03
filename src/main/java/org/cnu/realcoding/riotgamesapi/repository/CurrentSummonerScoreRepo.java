@@ -55,27 +55,44 @@ public class CurrentSummonerScoreRepo {
 //    Update Method in MongoDB
 //     need to change it
     public void updateCurrentSummonerScore(Set<LeaguePositionDTO> leagueDTOdata) {
-        LeaguePositionDTO leaguePositionDTO = makeToDTO(leagueDTOdata);
-        Iterator iterator = leagueDTOdata.iterator();
-        String updateName;
-        int idx=0;
-        while(iterator.hasNext()){
-            LeaguePositionDTO leaguePositionDTO = makeToDTO(iterator.next());
-            LeaguePositionDTO chageObj = leaguePositionDTO.getArray().get(idx);
-            updateName = chageObj.getSummonerName();
+        List<LinkedHashMap> data = new LinkedList(leagueDTOdata);
+        for (int i = 0; i < data.size(); i++) {
+            LeaguePositionDTO updatedata = makeToDTO(data.get(i));
+            String updateName = updatedata.getSummonerName();
+            String updateQueueType = updatedata.getQueueType();
 
             Query query = new Query();
-            query.addCriteria(Criteria.where("summonerId").is(updateName));
+            query.addCriteria(Criteria.where("summonerId").is(updateName).and("queueType").is("updateQueueType"));
             Update update = new Update();
-            update.set("tier",chageObj.getTier())
-                    .set("wins",chageObj.getWins())
-                    .set("losses",chageObj.getLosses())
-                    .set("rank",chageObj.getRank())
-                    .set("leagueName",chageObj.getLeagueName())
-                    .set("leaguePoints",chageObj.getLeaguePoints());
+            update.set("tier",updatedata.getTier())
+                    .set("wins",updatedata.getWins())
+                    .set("losses",updatedata.getLosses())
+                    .set("rank",updatedata.getRank())
+                    .set("leagueName",updatedata.getLeagueName())
+                    .set("leaguePoints",updatedata.getLeaguePoints());
 
             mongoTemplate.updateFirst(query,update,LeaguePositionDTO.class);
+
         }
+
+//        String updateName;
+//        int idx=0;
+//        while(iterator.hasNext()){
+//            LeaguePositionDTO leaguePositionDTO = makeToDTO(iterator.next());
+//            LeaguePositionDTO chageObj = leaguePositionDTO.getArray().get(idx);
+//
+//            Query query = new Query();
+//            query.addCriteria(Criteria.where("summonerId").is(updateName));
+//            Update update = new Update();
+//            update.set("tier",chageObj.getTier())
+//                    .set("wins",chageObj.getWins())
+//                    .set("losses",chageObj.getLosses())
+//                    .set("rank",chageObj.getRank())
+//                    .set("leagueName",chageObj.getLeagueName())
+//                    .set("leaguePoints",chageObj.getLeaguePoints());
+//
+//            mongoTemplate.updateFirst(query,update,LeaguePositionDTO.class);
+//        }
     }
 
     // return LeaguePositionDTO that found by summoner's name
