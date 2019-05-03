@@ -7,9 +7,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
-
-
-import java.lang.reflect.Array;
 import java.util.*;
 
 @Repository
@@ -62,8 +59,6 @@ public class CurrentSummonerScoreRepo {
             String updateName = updatedata.getSummonerName();
             String updateQueueType = updatedata.getQueueType();
 
-
-//            updatedata.setWins(777);
             Query query = new Query();
             query.addCriteria(Criteria.where("summonerName").is(updateName).and("queueType").is(updateQueueType));
 //            query.addCriteria(Criteria.where("summonerName").is(updateName));
